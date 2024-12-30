@@ -3,12 +3,12 @@ import Sidebar from "./SideBar"; // Import the Sidebar component
 import PasswordGenerator from "./PasswordGenerator"; // Import the PasswordGenerator component
 import { CountryDropdown } from "react-country-region-selector"; // Import the CountryDropdown component
 
-const AddNewAdmin = () => {
+const AddNewStudent = () => {
   const [adminName, setAdminName] = useState("Admin"); // Placeholder for dynamic admin name
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
-    adminNumber: "", // Admin number field
+    rollNo: "",
     email: "",
     password: "",
     country: "", // Add a country field
@@ -23,7 +23,7 @@ const AddNewAdmin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Admin Info:", formData);
+    console.log("Student Info:", formData);
   };
 
   const handleGeneratedPassword = (newPassword) => {
@@ -32,8 +32,8 @@ const AddNewAdmin = () => {
       password: newPassword, // Update the password field with the generated password
     }));
   };
-
   const handleCountryChange = (country) => {
+    // Handle country change
     setFormData(() => ({
       country: country, // Update the country field of the FormData with the selected value
     }));
@@ -54,7 +54,7 @@ const AddNewAdmin = () => {
         {/* Form */}
         <div className="w-full max-w-lg p-8 bg-white rounded-xl shadow-lg mt-6">
           <h1 className="text-2xl font-bold text-center text-teal-600 mb-6">
-            Add New Admin
+            Add New Student
           </h1>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
@@ -88,14 +88,14 @@ const AddNewAdmin = () => {
               </div>
             </div>
             <div>
-              <label htmlFor="adminNumber" className="block text-sm font-medium text-gray-700">
-                Admin Number
+              <label htmlFor="rollNo" className="block text-sm font-medium text-gray-700">
+                Roll No
               </label>
               <input
                 type="text"
-                id="adminNumber"
-                name="adminNumber"
-                value={formData.adminNumber}
+                id="rollNo"
+                name="rollNo"
+                value={formData.rollNo}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-3 py-2"
@@ -155,4 +155,4 @@ const AddNewAdmin = () => {
   );
 };
 
-export default AddNewAdmin;
+export default AddNewStudent;
