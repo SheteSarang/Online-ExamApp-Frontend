@@ -1,45 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   FaBars,
   FaChevronLeft,
-  FaUserCircle,  // New icon for Student
-  FaTasks,      // New icon for Test
+  FaUserCircle,
+  FaTasks,
   FaUserShield,
   FaSearch,
   FaChartBar,
   FaSignOutAlt,
-  FaPlus,       // Icon for Add
-  FaEdit,       // Icon for Edit
-  FaTrash,      // Icon for Delete
+  FaPlus,
+  FaEdit,
+  FaTrash,
 } from "react-icons/fa";
 
 function SideBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isStudentOpen, setIsStudentOpen] = useState(false);
+  const [isStudentOpen, setIsStudentOpen] = useState(false); // similarly for isTestOpen
   const [isTestOpen, setIsTestOpen] = useState(false);
+  const [activePath, setActivePath] = useState("");
   const navigate = useNavigate();
-  const location = useLocation(); // Hook to get the current route
+  const location = useLocation();
 
+  // Toggle Sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // Expand Sidebar (when collapsed)
   const expandSidebar = () => {
     if (!isSidebarOpen) setIsSidebarOpen(true);
   };
 
-  // Function to check if the current route is active
-  const isActive = (path) => {
-    return location.pathname === path ? "bg-gray-700" : "";
-  };
+  // Update activePath when the route changes
+  useEffect(() => {
+    setActivePath(location.pathname);
+    // Automatically open dropdowns based on active route
+    if (location.pathname.includes("/addnewstudent") || location.pathname.includes("/editstudent") || location.pathname.includes("/deletestudent") ) {
+      setIsStudentOpen(true);
+    } else {
+      setIsStudentOpen(false);
+    }
 
-  // Toggle student dropdown
+    if (location.pathname.includes("/test")) {
+      setIsTestOpen(true);
+    } else {
+      setIsTestOpen(false);
+    }
+  }, [location.pathname]);
+
+  // Function to check if the current route is active
+  const isActive = (path) => (activePath === path ? "bg-gray-700" : "");
+
+  // Toggle Student Dropdown
   const toggleStudentMenu = () => {
     setIsStudentOpen(!isStudentOpen);
   };
 
-  // Toggle test dropdown
+  // Toggle Test Dropdown
   const toggleTestMenu = () => {
     setIsTestOpen(!isTestOpen);
   };
@@ -68,7 +86,9 @@ function SideBar() {
           <ul className="mt-4 space-y-2">
             {/* Student */}
             <li
-              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive("/student")}`}
+              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive(
+                "/student"
+              )}`}
               onClick={() => {
                 expandSidebar();
                 toggleStudentMenu();
@@ -83,7 +103,9 @@ function SideBar() {
             {isStudentOpen && (
               <ul className="ml-4 space-y-2">
                 <li
-                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive("/addnewstudent")}`}
+                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive(
+                    "/addnewstudent"
+                  )}`}
                   onClick={() => {
                     expandSidebar();
                     navigate("/addnewstudent");
@@ -93,7 +115,9 @@ function SideBar() {
                   {isSidebarOpen && <span>Add a New Student</span>}
                 </li>
                 <li
-                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive("/editstudent")}`}
+                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive(
+                    "/editstudent"
+                  )}`}
                   onClick={() => {
                     expandSidebar();
                     navigate("/editstudent");
@@ -103,7 +127,9 @@ function SideBar() {
                   {isSidebarOpen && <span>Edit Student's Info</span>}
                 </li>
                 <li
-                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive("/deletestudent")}`}
+                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive(
+                    "/deletestudent"
+                  )}`}
                   onClick={() => {
                     expandSidebar();
                     navigate("/deletestudent");
@@ -117,7 +143,9 @@ function SideBar() {
 
             {/* Add New Admin */}
             <li
-              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive("/addnewadmin")}`}
+              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive(
+                "/addnewadmin"
+              )}`}
               onClick={() => {
                 expandSidebar();
                 navigate("/addnewadmin");
@@ -132,7 +160,9 @@ function SideBar() {
 
             {/* Test */}
             <li
-              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive("/test")}`}
+              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive(
+                "/test"
+              )}`}
               onClick={() => {
                 expandSidebar();
                 toggleTestMenu();
@@ -147,7 +177,9 @@ function SideBar() {
             {isTestOpen && (
               <ul className="ml-4 space-y-2">
                 <li
-                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive("/addtest")}`}
+                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive(
+                    "/addtest"
+                  )}`}
                   onClick={() => {
                     expandSidebar();
                     navigate("/addtest");
@@ -157,7 +189,9 @@ function SideBar() {
                   {isSidebarOpen && <span>Add a New Test</span>}
                 </li>
                 <li
-                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive("/edittest")}`}
+                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive(
+                    "/edittest"
+                  )}`}
                   onClick={() => {
                     expandSidebar();
                     navigate("/edittest");
@@ -167,7 +201,9 @@ function SideBar() {
                   {isSidebarOpen && <span>Edit Test</span>}
                 </li>
                 <li
-                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive("/deletetest")}`}
+                  className={`p-4 hover:bg-gray-700 cursor-pointer ${isActive(
+                    "/deletetest"
+                  )}`}
                   onClick={() => {
                     expandSidebar();
                     navigate("/deletetest");
@@ -181,7 +217,9 @@ function SideBar() {
 
             {/* Find a Result */}
             <li
-              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive("/findresultofonestudent")}`}
+              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive(
+                "/findresultofonestudent"
+              )}`}
               onClick={() => {
                 expandSidebar();
                 navigate("/findresultofonestudent");
@@ -193,7 +231,9 @@ function SideBar() {
 
             {/* Result Analysis */}
             <li
-              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive("/resultanalysis")}`}
+              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive(
+                "/resultanalysis"
+              )}`}
               onClick={() => {
                 expandSidebar();
                 navigate("/resultanalysis");
@@ -208,7 +248,9 @@ function SideBar() {
         {/* Logout Button */}
         <div className="p-4">
           <button
-            className={`w-full ${isSidebarOpen ? "p-4" : "p-2"} hover:bg-gray-700 cursor-pointer flex items-center ${
+            className={`w-full ${
+              isSidebarOpen ? "p-4" : "p-2"
+            } hover:bg-gray-700 cursor-pointer flex items-center ${
               isSidebarOpen ? "space-x-2" : "justify-center"
             } ${isActive("/logout")}`}
             onClick={() => {
@@ -218,7 +260,7 @@ function SideBar() {
           >
             <FaSignOutAlt
               size={20}
-              className={`${!isSidebarOpen ? "text-gray-400" : ""}`} // Greying out when collapsed
+              className={`${!isSidebarOpen ? "text-gray-400" : ""}`}
             />
             {isSidebarOpen && <span>Logout</span>}
           </button>

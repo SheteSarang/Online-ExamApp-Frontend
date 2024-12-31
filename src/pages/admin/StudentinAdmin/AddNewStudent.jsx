@@ -1,60 +1,85 @@
 import React, { useState } from "react";
-import Sidebar from "./SideBar"; // Import the Sidebar component
-import PasswordGenerator from "./PasswordGenerator"; // Import the PasswordGenerator component
-import { CountryDropdown } from "react-country-region-selector"; // Import the CountryDropdown component
+import SideBar from "../SideBar";
+import PasswordGenerator from "../PasswordGenerator";
+import { CountryDropdown } from "react-country-region-selector";
+import toast, { Toaster } from "react-hot-toast";
 
-const AddNewAdmin = () => {
-  const [adminName, setAdminName] = useState("Admin"); // Placeholder for dynamic admin name
+const AddNewStudent = () => {
+  const [adminName, setAdminName] = useState("Admin");
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
-    adminNumber: "", // Admin number field
+    rollno: "",
     email: "",
     password: "",
-    country: "", // Add a country field
+    country: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(() => ({
-      [name]: value, // Dynamically update the formData field
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Admin Info:", formData);
+    console.warn("Form data:", formData);
+    try {
+      const response = await fetch("http://localhost:5000/addnewstudent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        toast.success("Student added successfully!");
+        setFormData({
+          name: "",
+          surname: "",
+          rollno: "",
+          email: "",
+          password: "",
+          country: "",
+        });
+      } else {
+        toast.error("Failed to add student. Please try again.");
+        console.warn('HTTP Error:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error adding student:", error);
+      toast.error("An error occurred. Please try again later.");
+    }
   };
 
   const handleGeneratedPassword = (newPassword) => {
     setFormData((prevState) => ({
       ...prevState,
-      password: newPassword, // Update the password field with the generated password
+      password: newPassword,
     }));
   };
 
   const handleCountryChange = (country) => {
-    setFormData(() => ({
-      country: country, // Update the country field of the FormData with the selected value
+    setFormData((prevState) => ({
+      ...prevState,
+      country: country,
     }));
   };
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main Content */}
+      <SideBar />
       <div className="flex-1 flex flex-col min-h-screen items-center justify-start bg-teal-50">
-        {/* Header */}
+        <Toaster position="top-right" reverseOrder={false} />
         <header className="w-full bg-teal-700 text-white py-4">
           <h2 className="text-2xl text-center font-bold">Welcome {adminName}</h2>
         </header>
-
-        {/* Form */}
         <div className="w-full max-w-lg p-8 bg-white rounded-xl shadow-lg mt-6">
           <h1 className="text-2xl font-bold text-center text-teal-600 mb-6">
-            Add New Admin
+            Add New Student
           </h1>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
@@ -88,14 +113,14 @@ const AddNewAdmin = () => {
               </div>
             </div>
             <div>
-              <label htmlFor="adminNumber" className="block text-sm font-medium text-gray-700">
-                Admin Number
+              <label htmlFor="rollNo" className="block text-sm font-medium text-gray-700">
+                Roll No
               </label>
               <input
                 type="text"
-                id="adminNumber"
-                name="adminNumber"
-                value={formData.adminNumber}
+                id="rollno"
+                name="rollno"
+                value={formData.rollno}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-3 py-2"
@@ -114,34 +139,29 @@ const AddNewAdmin = () => {
                 className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-3 py-2"
               />
             </div>
-
-            {/* Country Dropdown */}
             <div>
               <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                 Country
               </label>
               <CountryDropdown
-                value={formData.country} // Bind the selected country value
-                onChange={handleCountryChange} // Pass the selected country to the state
+                value={formData.country}
+                onChange={handleCountryChange}
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-3 py-2"
               />
             </div>
-
-            {/* Password field with Password Generator */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <div className="flex items-center space-x-2">
-                {/* Password Generator Component */}
                 <PasswordGenerator
                   initialLength={12}
                   initialNumberAllowed={true}
                   initialCharAllowed={true}
-                  onPasswordChange={handleGeneratedPassword} // Update the form's password field with the generated password
+                  onPasswordChange={handleGeneratedPassword}
                 />
               </div>
             </div>
-
             <button
               type="submit"
               className="w-full py-3 px-4 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
@@ -155,4 +175,4 @@ const AddNewAdmin = () => {
   );
 };
 
-export default AddNewAdmin;
+export default AddNewStudent;

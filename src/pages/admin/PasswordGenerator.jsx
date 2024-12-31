@@ -67,6 +67,7 @@ function PasswordGenerator({
           onChange={handlePasswordChange} // Allow manual editing
         />
         <button
+        type='button'
           onClick={copyPasswordToClipboard}
           className="outline-none bg-teal-700 text-white px-3 py-0.5 shrink-0 cursor-pointer rounded active:bg-teal-800 hover:bg-teal-600 transition duration-200"
         >
