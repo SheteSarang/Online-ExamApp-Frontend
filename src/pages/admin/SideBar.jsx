@@ -242,15 +242,27 @@ function SideBar() {
               <FaChartBar size={20} />
               {isSidebarOpen && <span>Result Analysis</span>}
             </li>
+
+            {/* Find Student Info */}
+            <li
+              className={`p-4 hover:bg-gray-700 cursor-pointer flex items-center space-x-2 ${isActive(
+                "/findstudentsinfo"
+              )}`}
+              onClick={() => {
+                expandSidebar();
+                navigate("/findstudentsinfo");
+              }}
+            >
+              <FaSearch size={20} />
+              {isSidebarOpen && <span>Find Student Info</span>}
+            </li>
           </ul>
         </div>
 
         {/* Logout Button */}
         <div className="p-4">
           <button
-            className={`w-full ${
-              isSidebarOpen ? "p-4" : "p-2"
-            } hover:bg-gray-700 cursor-pointer flex items-center ${
+            className={`w-full ${isSidebarOpen ? "p-4" : "p-2"} hover:bg-gray-700 cursor-pointer flex items-center ${
               isSidebarOpen ? "space-x-2" : "justify-center"
             } ${isActive("/logout")}`}
             onClick={() => {

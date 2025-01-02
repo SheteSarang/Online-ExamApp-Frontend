@@ -12,6 +12,7 @@ import AddTest from "../pages/admin/TestInAdmin/AddTest";
 import FindResultOfOneStudent from "../pages/admin/FindResultInAdmin/FindResultOfOneStudent";
 import ResultAnalysis from "../pages/admin/ResultAnalysysInAdmin/ResultAnalysis";
 import Logout from "../pages/admin/LogoutInAdmin/Logout";
+import StartTest from "../pages/student/StartTest";
 
 //Admin Imports
 
@@ -19,6 +20,7 @@ import Logout from "../pages/admin/LogoutInAdmin/Logout";
 import  AddNewStudent  from "../pages/admin/StudentinAdmin/AddNewStudent";
 import EditStudent from "../pages/admin/StudentinAdmin/EditStudent";
 import DeleteStudent from "../pages/admin/StudentinAdmin/DeleteStudent";
+import FindStudentsInfo from "../pages/admin/StudentinAdmin/FindStudentsInfo";
 //--Student in admin Imports
 
 
@@ -29,17 +31,21 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<LoginSelection />} />
         <Route path="/userdashboard" element={<UserDashboard />} />
+        <Route path="/starttest/:subjectCode" element={<StartTest />} />
         <Route path="/admin" element={<SideBar />} />
         <Route path="/loginwithnewadmin" element={<LoginWithNewAdmin />} />
         <Route path="/userlogin" element={<UserLogin />} />
         <Route path="/addnewstudent" element={<AddNewStudent />} />
         <Route path="/editstudent" element={<EditStudent />} />
         <Route path="/deletestudent" element={<DeleteStudent />} />
+        <Route path="/findstudentsinfo" element={<FindStudentsInfo />} />
         <Route path="/addnewadmin" element={<AddNewAdmin />} />
         <Route path="/addtest" element={<AddTest />} />
         <Route path="/findresultofonestudent" element={<FindResultOfOneStudent />} />
         <Route path="/resultanalysis" element={<ResultAnalysis />} />
         <Route path="/logout" element={<Logout />} />
+      
+
        
 
       </Routes>
